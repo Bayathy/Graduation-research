@@ -1,0 +1,6 @@
+{
+  "linter": {
+    "enabled": false,
+    "ignore": ["./node_modules"]
+  }
+}
