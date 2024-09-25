@@ -23,7 +23,14 @@ export type StoreType = {
 };
 
 export const useFlowStore = create<StoreType>((set, get) => ({
-  nodes: <Node[]>[],
+  nodes: <Node[]>[
+    {
+      id: "node-1",
+      type: "start",
+      position: { x: 0, y: 0 },
+      data: { value: 123 },
+    },
+  ],
   edges: <Edge[]>[],
 
   onNodesChange(changes: NodeChange[]) {
