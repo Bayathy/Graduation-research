@@ -1,54 +1,55 @@
 import {
-	applyEdgeChanges,
-	applyNodeChanges,
-	Connection,
-	Edge,
-	EdgeChange,
-	Node,
-	NodeChange,
-	OnConnect,
-	OnEdgesChange,
-	OnNodesChange,
+  applyEdgeChanges,
+  applyNodeChanges,
+  Connection,
+  Edge,
+  EdgeChange,
+  Node,
+  NodeChange,
+  OnConnect,
+  OnEdgesChange,
+  OnNodesChange,
 } from "@xyflow/react";
 import { nanoid } from "nanoid";
 import { create } from "zustand";
 
 export type StoreType = {
-	nodes: Node[];
-	edges: Edge[];
+  nodes: Node[];
+  edges: Edge[];
 
-	onNodesChange: OnNodesChange;
-	onEdgesChange: OnEdgesChange;
-	onConnect: OnConnect;
+  onNodesChange: OnNodesChange;
+  onEdgesChange: OnEdgesChange;
+  onConnect: OnConnect;
+  createNode: (node: Omit<Node, "id">) => void;
 };
 
 export const useFlowStore = create<StoreType>((set, get) => ({
-	nodes: <Node[]>[
-		{
-			id: "node-1",
-			type: "start",
-			position: { x: 0, y: 0 },
-			data: { value: 123 },
-		},
-	],
-	edges: <Edge[]>[],
+  nodes: <Node[]>[],
+  edges: <Edge[]>[],
 
-	onNodesChange(changes: NodeChange[]) {
-		set({
-			nodes: applyNodeChanges(changes, get().nodes),
-		});
-	},
+  onNodesChange(changes: NodeChange[]) {
+    set({
+      nodes: applyNodeChanges(changes, get().nodes),
+    });
+  },
 
-	onEdgesChange(changes: EdgeChange[]) {
-		set({
-			edges: applyEdgeChanges(changes, get().edges),
-		});
-	},
+  onEdgesChange(changes: EdgeChange[]) {
+    set({
+      edges: applyEdgeChanges(changes, get().edges),
+    });
+  },
 
-	onConnect(data: Connection) {
-		const id = nanoid(6);
-		const edge = { id, ...data };
+  onConnect(data: Connection) {
+    const id = nanoid(6);
+    const edge = { id, ...data };
 
-		set({ edges: [edge, ...get().edges] });
-	},
+    set({ edges: [edge, ...get().edges] });
+  },
+
+  createNode(node) {
+    const id = nanoid(6);
+    const newNode = { id, ...node };
+
+    set({ nodes: [newNode, ...get().nodes] });
+  },
 }));
